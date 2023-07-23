@@ -1,3 +1,4 @@
+from main import views
 from main.apps import MainConfig
 from rest_framework.routers import DefaultRouter
 
