@@ -36,6 +36,7 @@ class Student(models.Model):
 
 
 class Well(models.Model):
+    objects = None
     well_name = models.CharField(max_length=150, unique=True, default='название', verbose_name='название курса')
     # email = models.OneToOneField(Student, on_delete=models.CASCADE, null=False, verbose_name='почта_пользователя')
     well_image = models.ImageField(upload_to='well_image/', verbose_name='превью курса', **NULLABLE)
