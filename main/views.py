@@ -4,7 +4,7 @@ from main.models import Well
 from main.serliazers import WellSeializer
 
 
-class WellVieSet(viewsets.ModelViewSet):
+class WellViewSet(viewsets.ModelViewSet):
     serializer_class = WellSeializer
     queryset = Well.objects.all()
 
