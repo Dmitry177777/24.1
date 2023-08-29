@@ -37,7 +37,6 @@ class Student(models.Model):
         verbose_name_plural='Пользователи сервиса'
         ordering = ('student', )
 
-
 class Well(models.Model):
     objects = None
     well_name = models.CharField(max_length=150, unique=True, default='название', verbose_name='название курса')
@@ -54,13 +53,16 @@ class Well(models.Model):
         verbose_name = 'Курс'
         verbose_name_plural = 'Курсы'
 
+
+
 class Lesson(models.Model):
     objects = None
     # email = models.OneToOneField(Student, on_delete=models.CASCADE,  default='mail', verbose_name='почта_пользователя')
-    lesson_name = models.CharField(max_length=150, unique=True, default='название', verbose_name='название урока')
+    lesson_name = models.CharField(max_length=150,  unique=True, default='', verbose_name='название урока')
     lesson_description = models.TextField(max_length=1000, verbose_name='описание урока', **NULLABLE)
     lesson_image = models.ImageField(upload_to='lesson_image/', verbose_name='превью урока', **NULLABLE)
-    lesson_link = models.URLField(max_length=150, unique=True, default='', verbose_name='ссылка на видео')
+    lesson_link = models.URLField(max_length=150, default='', verbose_name='ссылка на видео')
+    well_name = models.ForeignKey(Well, on_delete=models.CASCADE, verbose_name='название курса')
 
     class Meta:
         verbose_name = 'Урок'
@@ -68,6 +70,11 @@ class Lesson(models.Model):
 
     def __str__(self):
         return f'{self.lesson_name}: {self.lesson_description}'
+
+
+
+
+
 
 
 
