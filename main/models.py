@@ -73,6 +73,21 @@ class Lesson(models.Model):
 
 
 
+class Payment(models.Model):
+    objects = None
+    # email = models.OneToOneField(Student, on_delete=models.CASCADE,  default='mail', verbose_name='почта_пользователя')
+    client = models.CharField(max_length=150,  unique=True, default='', verbose_name='пользователь')
+    date_of_payment = models.DateTimeField()
+    well_name = models.ForeignKey(Well, on_delete=models.CASCADE, verbose_name='оплаченный курс')
+    payment_amount = models.IntegerField(default=0, verbose_name='сумма оплаты')
+    payment_method = models.TextField(max_length=1000, verbose_name='метод оплаты', **NULLABLE)
+
+    class Meta:
+        verbose_name = 'оплаченный курс'
+        verbose_name_plural = 'оплаченные курсы'
+
+    def __str__(self):
+        return f'{self.client}: {self.well_name}'
 
 
 
