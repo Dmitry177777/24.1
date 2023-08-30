@@ -18,16 +18,17 @@ class PaymentViewSet(viewsets.ModelViewSet):
     filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['well_name', 'payment_method']
     ordering_fields = ['date_of_payment']
+    permission_classes = [IsAuthenticated]
 
 class WellViewSet(viewsets.ModelViewSet):
     serializer_class = WellSerializer
     queryset = Well.objects.all()
-    permission_classes = [IsLessonOwner | IsModerator]
+    permission_classes = [IsAuthenticated, IsModerator | IsLessonOwner]
 
 
 class LessonCreateAPIView(generics.CreateAPIView):
     serializer_class = LessonSerializer
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
 class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
@@ -37,11 +38,11 @@ class LessonListAPIView(generics.ListAPIView):
 class LessonRetrieveAPIView(generics.RetrieveAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
-    permission_classes = [IsModerator | IsLessonOwner]
+    permission_classes = [IsAuthenticated, IsModerator | IsLessonOwner]
 class LessonUpdateAPIView(generics.UpdateAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
-    permission_classes = [IsLessonOwner | IsModerator]
+    permission_classes = [IsAuthenticated, IsModerator | IsLessonOwner]
 class LessonDestroyAPIView(generics.DestroyAPIView):
     queryset = Lesson.objects.all()
-    permission_classes = [IsLessonOwner]
+    permission_classes = [IsAuthenticated, IsLessonOwner]
