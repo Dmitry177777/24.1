@@ -63,6 +63,8 @@ class Lesson(models.Model):
     lesson_image = models.ImageField(upload_to='lesson_image/', verbose_name='превью урока', **NULLABLE)
     lesson_link = models.URLField(max_length=150, default='', verbose_name='ссылка на видео')
     well_name = models.ForeignKey(Well, on_delete=models.CASCADE, verbose_name='название курса')
+    owner = models.ForeignKey("users.User", on_delete=models.CASCADE, null=True)
+    is_public = models.BooleanField (default=False)
 
     class Meta:
         verbose_name = 'Урок'
