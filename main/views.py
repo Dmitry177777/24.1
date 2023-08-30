@@ -1,4 +1,4 @@
-
+from requests import request
 from rest_framework import viewsets, generics, routers
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django.urls import path, include
@@ -11,6 +11,8 @@ from main.permissions import IsLessonOwner, IsModerator
 from main.serializers import WellSerializer, LessonSerializer, PaymentSerializer
 from django.shortcuts import get_object_or_404
 
+from users.models import UserRoles
+
 
 class PaymentViewSet(viewsets.ModelViewSet):
     serializer_class = PaymentSerializer
@@ -22,8 +24,15 @@ class PaymentViewSet(viewsets.ModelViewSet):
 
 class WellViewSet(viewsets.ModelViewSet):
     serializer_class = WellSerializer
-    queryset = Well.objects.all()
     permission_classes = [IsAuthenticated, IsModerator | IsLessonOwner]
+
+    def get_queryset (self):
+        user=self.request.user
+        role=self.request.user.role
+        if role == UserRoles.MODERATOR:
+            return Lesson.objects.all()
+        else:
+            return Lesson.objects.filter(owner=user)
 
 
 class LessonCreateAPIView(generics.CreateAPIView):
@@ -31,8 +40,15 @@ class LessonCreateAPIView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
 class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
-    queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated, IsModerator | IsLessonOwner]
+
+    def get_queryset (self):
+        user=self.request.user
+        role=self.request.user.role
+        if role == UserRoles.MODERATOR:
+            return Lesson.objects.all()
+        else:
+            return Lesson.objects.filter(owner=user)
 
 
 class LessonRetrieveAPIView(generics.RetrieveAPIView):
