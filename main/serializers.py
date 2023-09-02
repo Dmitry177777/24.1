@@ -17,7 +17,7 @@ class PaymentSerializer(serializers.ModelSerializer):
 
 class WellSerializer(serializers.ModelSerializer):
     lesson_count = serializers.SerializerMethodField()
-    lesson = LessonSerializer(many=True, read_only=True, source='lesson_set')
+    lesson = LessonSerializer(many=True, read_only=True, source='lesson.queryset')
 
 
     class Meta:
