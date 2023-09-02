@@ -1,12 +1,16 @@
 from rest_framework import serializers
 
 from main.models import Well, Lesson, Payment
+from main.validators import lesson_linkValidator
 
 
 class LessonSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Lesson
-        fields = ["id", "lesson_name", "lesson_description"]
+        fields = ["id", "lesson_name", "lesson_description", "lesson_link", "well_name"]
+        validators = [lesson_linkValidator(field='lesson_link')]
+
 
 
 class PaymentSerializer(serializers.ModelSerializer):
