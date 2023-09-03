@@ -1,7 +1,10 @@
+from django.http import JsonResponse
 from rest_framework import serializers
+import json
 
-from main.models import Well, Lesson, Payment
+from main.models import Well, Lesson, Payment, Subscription
 from main.validators import lesson_linkValidator
+from users.models import UserRoles
 
 
 class LessonSerializer(serializers.ModelSerializer):
@@ -19,15 +22,52 @@ class PaymentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class SubscriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subscription
+        fields = '__all__'
+
+
+
+
 class WellSerializer(serializers.ModelSerializer):
+    subscription = serializers.SerializerMethodField()
+    # subscription = serializers.BooleanField(read_only=True, source='subscription_set.last.is_activ')
     lesson_count = serializers.SerializerMethodField()
-    lesson = LessonSerializer(many=True, read_only=True, source='lesson.queryset')
+    lesson = LessonSerializer(many=True, read_only=True, source='lesson_set')
+    # lesson = serializers.SerializerMethodField()
+
+
+
 
 
     class Meta:
         model = Well
         fields = '__all__'
 
+
+
     def get_lesson_count(self, instance):
         return instance.lesson_set.count()
+
+    # def get_lesson(self, instance):
+    #     user = self.context['request'].user
+    #     role = self.context['request'].user.role
+    #     if role == UserRoles.MODERATOR:
+    #         return instance.lesson_set.all()
+    #     else:
+    #         print(instance.lesson_set.all())
+    #         return 7 #instance.lesson_set.all().filter(owner=user)
+
+    def get_subscription(self, instance):
+        user = self.context['request'].user
+        for i in instance.subscription_set.all():
+            if i.owner == user:
+                return i.is_activ
+
+
+
+
+
+
 

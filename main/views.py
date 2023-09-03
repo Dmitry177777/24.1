@@ -4,11 +4,11 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from django.urls import path, include
 from rest_framework.permissions import IsAuthenticated
 
-from main.models import Well, Lesson, Payment
+from main.models import Well, Lesson, Payment, Subscription
 from rest_framework.response import Response
 
 from main.permissions import IsLessonOwner, IsModerator
-from main.serializers import WellSerializer, LessonSerializer, PaymentSerializer
+from main.serializers import WellSerializer, LessonSerializer, PaymentSerializer, SubscriptionSerializer
 from django.shortcuts import get_object_or_404
 
 from users.models import UserRoles
@@ -22,18 +22,16 @@ class PaymentViewSet(viewsets.ModelViewSet):
     ordering_fields = ['date_of_payment']
     permission_classes = [IsAuthenticated]
 
+
+
+
+
+
 class WellViewSet(viewsets.ModelViewSet):
     serializer_class = WellSerializer
     queryset = Well.objects.all()
-    permission_classes = [IsAuthenticated, IsModerator | IsLessonOwner]
+    permission_classes = [IsAuthenticated]
 
-    # def get_queryset (self):
-    #     user=self.request.user
-    #     role=self.request.user.role
-    #     if role == UserRoles.MODERATOR:
-    #         return Lesson.objects.all()
-    #     else:
-    #         return Lesson.objects.filter(owner=user)
 
 
 class LessonCreateAPIView(generics.CreateAPIView):
@@ -45,7 +43,7 @@ class LessonCreateAPIView(generics.CreateAPIView):
 
 class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
-    queryset = Lesson.objects.all()
+    # queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated, IsModerator | IsLessonOwner]
 
     def get_queryset (self):
@@ -70,4 +68,41 @@ class LessonUpdateAPIView(generics.UpdateAPIView):
     permission_classes = [IsAuthenticated, IsModerator | IsLessonOwner]
 class LessonDestroyAPIView(generics.DestroyAPIView):
     queryset = Lesson.objects.all()
+    permission_classes = [IsAuthenticated, IsLessonOwner]
+
+
+
+
+class SubscriptionCreateAPIView(generics.CreateAPIView):
+    serializer_class = SubscriptionSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class SubscriptionListAPIView(generics.ListAPIView):
+    serializer_class = SubscriptionSerializer
+    queryset = Subscription.objects.all()
+    permission_classes = [IsAuthenticated, IsModerator | IsLessonOwner]
+
+    def get_queryset (self):
+        user=self.request.user
+        role=self.request.user.role
+        if role == UserRoles.MODERATOR:
+            return Subscription.objects.all()
+        else:
+            return Subscription.objects.filter(owner=user)
+
+
+class SubscriptionRetrieveAPIView(generics.RetrieveAPIView):
+    serializer_class = SubscriptionSerializer
+    queryset = Subscription.objects.all()
+    permission_classes = [IsAuthenticated, IsModerator | IsLessonOwner]
+
+
+
+class SubscriptionUpdateAPIView(generics.UpdateAPIView):
+    serializer_class = SubscriptionSerializer
+    queryset = Subscription.objects.all()
+    permission_classes = [IsAuthenticated, IsModerator | IsLessonOwner]
+class SubscriptionDestroyAPIView(generics.DestroyAPIView):
+    queryset = Subscription.objects.all()
     permission_classes = [IsAuthenticated, IsLessonOwner]

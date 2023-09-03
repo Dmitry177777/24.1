@@ -1,5 +1,6 @@
 from rest_framework.permissions import  BasePermission
 
+from main.models import Lesson
 from users.models import UserRoles
 
 
@@ -18,4 +19,6 @@ class IsLessonOwner(BasePermission):
         if request.user == obj.owner:
             return True
         return False
+
+
 

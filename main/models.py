@@ -63,8 +63,8 @@ class Lesson(models.Model):
     lesson_image = models.ImageField(upload_to='lesson_image/', verbose_name='превью урока', **NULLABLE)
     lesson_link = models.URLField(max_length=150, default='', verbose_name='ссылка на видео')
     well_name = models.ForeignKey(Well, on_delete=models.CASCADE, verbose_name='название курса')
-    owner = models.ForeignKey("users.User", on_delete=models.CASCADE, null=True)
-    is_public = models.BooleanField (default=False)
+    owner = models.ForeignKey("users.User", on_delete=models.CASCADE, null=False)
+    is_public = models.BooleanField (default=True)
 
     class Meta:
         verbose_name = 'Урок'
@@ -74,22 +74,52 @@ class Lesson(models.Model):
         return f'{self.lesson_name}: {self.lesson_description}'
 
 
+    def delete(self, *args, **kwargs):
+        self.is_public = False
+        self.save()
+
+
 
 class Payment(models.Model):
     objects = None
     # email = models.OneToOneField(Student, on_delete=models.CASCADE,  default='mail', verbose_name='почта_пользователя')
-    client = models.CharField(max_length=150,  unique=True, default='', verbose_name='пользователь')
     date_of_payment = models.DateTimeField(**NULLABLE)
     well_name = models.ForeignKey(Well, on_delete=models.CASCADE, verbose_name='оплаченный курс')
     payment_amount = models.IntegerField(default=0, verbose_name='сумма оплаты')
     payment_method = models.TextField(max_length=1000, verbose_name='метод оплаты', **NULLABLE)
+    owner = models.ForeignKey("users.User", on_delete=models.CASCADE, null=True)
+
 
     class Meta:
         verbose_name = 'оплаченный курс'
         verbose_name_plural = 'оплаченные курсы'
 
     def __str__(self):
-        return f'{self.client}: {self.well_name}'
+        return f'{self.owner}: {self.well_name}'
+
+
+class Subscription(models.Model):
+    objects = None
+    # email = models.OneToOneField(Student, on_delete=models.CASCADE,  default='mail', verbose_name='почта_пользователя')
+    well_name = models.ForeignKey(Well, on_delete=models.CASCADE, null=False, verbose_name='курс подписки')
+    owner = models.ForeignKey("users.User", on_delete=models.CASCADE, null=False, verbose_name='Пользователь')
+    is_activ = models.BooleanField(default=True, verbose_name='Подписка')
+
+    class Meta:
+        unique_together = ('well_name', 'owner')
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'
+
+    def __str__(self):
+        return f'{self.owner}: {self.well_name}'
+
+        # функция переопределяет удаление и не удаляет объект а переводит флаг is_publication = False
+
+    # def delete(self, *args, **kwargs):
+    #     self.is_activ = False
+    #     self.save()
+
+
 
 
 
