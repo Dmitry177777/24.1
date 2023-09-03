@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from main.models import Well, Lesson, Payment, Subscription
 from rest_framework.response import Response
 
+from main.paginators import MainPaginator
 from main.permissions import IsLessonOwner, IsModerator
 from main.serializers import WellSerializer, LessonSerializer, PaymentSerializer, SubscriptionSerializer
 from django.shortcuts import get_object_or_404
@@ -31,7 +32,7 @@ class WellViewSet(viewsets.ModelViewSet):
     serializer_class = WellSerializer
     queryset = Well.objects.all()
     permission_classes = [IsAuthenticated]
-
+    pagination_class = MainPaginator
 
 
 class LessonCreateAPIView(generics.CreateAPIView):
@@ -45,6 +46,7 @@ class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
     # queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated, IsModerator | IsLessonOwner]
+    pagination_class = MainPaginator
 
     def get_queryset (self):
         user=self.request.user
