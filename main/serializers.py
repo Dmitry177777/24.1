@@ -1,3 +1,4 @@
+from django.core.serializers import serialize
 from django.http import JsonResponse
 from rest_framework import serializers
 import json
@@ -34,8 +35,8 @@ class WellSerializer(serializers.ModelSerializer):
     subscription = serializers.SerializerMethodField()
     # subscription = serializers.BooleanField(read_only=True, source='subscription_set.last.is_activ')
     lesson_count = serializers.SerializerMethodField()
-    lesson = LessonSerializer(many=True, read_only=True, source='lesson_set')
-    # lesson = serializers.SerializerMethodField()
+    # lesson = LessonSerializer(many=True, read_only=True, source='lesson_set')
+    lesson = serializers.SerializerMethodField()
 
 
 
@@ -50,14 +51,24 @@ class WellSerializer(serializers.ModelSerializer):
     def get_lesson_count(self, instance):
         return instance.lesson_set.count()
 
-    # def get_lesson(self, instance):
-    #     user = self.context['request'].user
-    #     role = self.context['request'].user.role
-    #     if role == UserRoles.MODERATOR:
-    #         return instance.lesson_set.all()
-    #     else:
-    #         print(instance.lesson_set.all())
-    #         return 7 #instance.lesson_set.all().filter(owner=user)
+    def get_lesson(self, instance):
+        user = self.context['request'].user
+        role = self.context['request'].user.role
+        if role == UserRoles.MODERATOR:
+            # Получаем сет объектов QuerySet
+            response = instance.lesson_set.all()
+            # Сериализуем объкты QuerySet в формат Json
+            serialized_data = serialize("json", response, use_natural_foreign_keys=True)
+            serialized_data = json.loads(serialized_data)
+            return serialized_data
+        else:
+            #Получаем сет объектов QuerySet
+            response = instance.lesson_set.filter(owner=user).all()
+            #Сериализуем объкты QuerySet в формат Json
+            serialized_data = serialize("json", response, use_natural_foreign_keys=True)
+            serialized_data = json.loads(serialized_data)
+
+           return serialized_data
 
     def get_subscription(self, instance):
         user = self.context['request'].user

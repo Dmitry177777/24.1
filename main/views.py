@@ -25,9 +25,6 @@ class PaymentViewSet(viewsets.ModelViewSet):
 
 
 
-
-
-
 class WellViewSet(viewsets.ModelViewSet):
     serializer_class = WellSerializer
     queryset = Well.objects.all()
