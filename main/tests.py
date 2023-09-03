@@ -22,6 +22,8 @@ class MainTestCase(APITestCase):
             data=data
         )
 
+        print(response.json())
+
         self.assertEqual(response.status_code,
                          status.HTTP_201_CREATED
         )

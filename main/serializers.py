@@ -68,7 +68,7 @@ class WellSerializer(serializers.ModelSerializer):
             serialized_data = serialize("json", response, use_natural_foreign_keys=True)
             serialized_data = json.loads(serialized_data)
 
-           return serialized_data
+            return serialized_data
 
     def get_subscription(self, instance):
         user = self.context['request'].user

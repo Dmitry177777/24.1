@@ -2,7 +2,7 @@
 from rest_framework import viewsets, generics, routers
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django.urls import path, include
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from main.models import Well, Lesson, Payment, Subscription
 from rest_framework.response import Response
@@ -34,7 +34,8 @@ class WellViewSet(viewsets.ModelViewSet):
 
 class LessonCreateAPIView(generics.CreateAPIView):
     serializer_class = LessonSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
+    # permission_classes = [IsAuthenticated]
 
 
 
