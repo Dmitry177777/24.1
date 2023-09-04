@@ -10,7 +10,7 @@ class MainTestCase(APITestCase):
     def setUp(self):
         Well.objects.create(id=1, well_name="5 курс")
         #создание и аутентификация суперюзера
-        self.user=User.objects.create_superuser(email="admin@sky.pro", password="123456", role="MODERATOR", is_active=True)
+        self.user=User.objects.create_superuser(id=1, email="admin@sky.pro", password="123456", role="MODERATOR", is_active=True)
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
 
@@ -55,6 +55,8 @@ class MainTestCase(APITestCase):
         self.assertEqual(response.status_code,
                          status.HTTP_200_OK
                          )
+
+
 
     def test_create_subscription(self):
         """Тестирование создание подписки"""
