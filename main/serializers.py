@@ -39,9 +39,6 @@ class WellSerializer(serializers.ModelSerializer):
     lesson = serializers.SerializerMethodField()
 
 
-
-
-
     class Meta:
         model = Well
         fields = '__all__'

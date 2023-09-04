@@ -34,16 +34,16 @@ class WellViewSet(viewsets.ModelViewSet):
 
 class LessonCreateAPIView(generics.CreateAPIView):
     serializer_class = LessonSerializer
-    permission_classes = [AllowAny]
-    # permission_classes = [IsAuthenticated]
-
+    permission_classes = [IsAuthenticated]
+    read_only = True
 
 
 
 class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
     # queryset = Lesson.objects.all()
-    permission_classes = [IsAuthenticated, IsModerator | IsLessonOwner]
+    permission_classes = [AllowAny]
+    # permission_classes = [IsAuthenticated, IsModerator | IsLessonOwner]
     pagination_class = MainPaginator
 
     def get_queryset (self):
