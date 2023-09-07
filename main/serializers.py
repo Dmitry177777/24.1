@@ -4,6 +4,7 @@ from rest_framework import serializers
 import json
 
 from main.models import Well, Lesson, Payment, Subscription
+from main.services import payment_intents_create, payment_intents_retrieve
 from main.validators import lesson_linkValidator
 from users.models import UserRoles
 
@@ -18,9 +19,20 @@ class LessonSerializer(serializers.ModelSerializer):
 
 
 class PaymentSerializer(serializers.ModelSerializer):
-     class Meta:
+    payment_create = serializers.SerializerMethodField()
+    payment_retrieve = serializers.SerializerMethodField()
+
+    class Meta:
         model = Payment
         fields = '__all__'
+
+    """создание платежа"""
+    def get_payment_create(self, instance):
+        return payment_intents_create(instance)
+
+    """получение платежа"""
+    def get_payment_retrieve(self, instance):
+        return payment_intents_retrieve(instance)
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):

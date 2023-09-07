@@ -179,3 +179,7 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
+
+STRIPE_CREATE_URL = 'https://api.stripe.com/v1/payment_intents'
+STRIPE_RETRIEVE_URL = 'https://api.stripe.com/v1/payment_intents/pi_1Gt09Z2eZvKYlo2C8ZiS4b2r'
+STRIPE_AUTH ='sk_test_4eC39HqLyjWDarjtT1zdp7dc'
