@@ -182,4 +182,4 @@ SIMPLE_JWT = {
 
 STRIPE_CREATE_URL = 'https://api.stripe.com/v1/payment_intents'
 STRIPE_RETRIEVE_URL = 'https://api.stripe.com/v1/payment_intents/pi_1Gt09Z2eZvKYlo2C8ZiS4b2r'
-STRIPE_AUTH ='sk_test_4eC39HqLyjWDarjtT1zdp7dc'
+STRIPE_AUTH ='pk_test_51Nnm8HFlTYpLw2PHisnKZg3IOPQIqzPH8YJeZ6LGBtrBs6IcYJFNukq638cCIg9f6qhnoEVpJwwGBvJCIIo5duPT005Jyp2pZy'

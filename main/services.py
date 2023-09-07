@@ -11,9 +11,12 @@ def payment_intents_create(instance):
     }
 
     amount = instance.payment_amount
+    well = instance.well_name
 
 
-    data = f'amount={amount}&currency=usd&automatic_payment_methods[enabled]=true'
+    data = f'unit_amount={amount}&currency = eur & recurring[interval] = month & product = {well}'
+
+
 
     response = requests.post(
         f'{settings.STRIPE_CREATE_URL}',
@@ -21,6 +24,8 @@ def payment_intents_create(instance):
         data=data,
         auth=(f'{settings.STRIPE_AUTH}', ''),
     )
+
+    print(response)
     return response
 
 """получение платежа"""
