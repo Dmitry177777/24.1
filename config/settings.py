@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     #install
     'rest_framework',
     'rest_framework_simplejwt',
+    'drf_yasg',
     #myapp
     'users',
     'main',
