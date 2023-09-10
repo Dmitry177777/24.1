@@ -15,13 +15,13 @@ def payment_intents_create(instance):
 
 
     data = f'unit_amount={amount}&currency = eur & recurring[interval] = month & product = {well}'
-
+    encoded_data = data.encode('utf-8')
 
 
     response = requests.post(
         f'{settings.STRIPE_CREATE_URL}',
         headers=headers,
-        data=data,
+        data=encoded_data,
         auth=(f'{settings.STRIPE_AUTH}', ''),
     )
 
