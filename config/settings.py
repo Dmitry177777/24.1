@@ -183,3 +183,24 @@ SIMPLE_JWT = {
 STRIPE_CREATE_URL = 'https://api.stripe.com/v1/payment_intents'
 STRIPE_RETRIEVE_URL = 'https://api.stripe.com/v1/payment_intents/pi_1Gt09Z2eZvKYlo2C8ZiS4b2r'
 STRIPE_AUTH ='pk_test_51Nnm8HFlTYpLw2PHisnKZg3IOPQIqzPH8YJeZ6LGBtrBs6IcYJFNukq638cCIg9f6qhnoEVpJwwGBvJCIIo5duPT005Jyp2pZy'
+
+# Настройки для брокера Redis
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+
+# Настройки для Celery
+
+# URL-адрес брокера сообщений
+CELERY_BROKER_URL = 'redis://localhost:6379' # Например, Redis, который по умолчанию работает на порту 6379
+
+# URL-адрес брокера результатов, также Redis
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+
+# Часовой пояс для работы Celery
+CELERY_TIMEZONE = "Australia/Tasmania"
+
+# Флаг отслеживания выполнения задач
+CELERY_TASK_TRACK_STARTED = True
+
+# Максимальное время на выполнение задачи
+CELERY_TASK_TIME_LIMIT = 30 * 60
