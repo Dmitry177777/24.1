@@ -20,7 +20,7 @@ def send_moderator_email():
     )
 
 
-
+@shared_task
 def check_last_login ():
     #текущее время
     today = datetime.datetime.now()
