@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'drf_yasg',
+    'django_celery_beat',
     #myapp
     'users',
     'main',
@@ -190,6 +191,14 @@ REDIS_PORT = 6379
 
 # Настройки для Celery
 
+# Настройки для Celery
+CELERY_BEAT_SCHEDULE = {
+    'task-name': {
+        'task': 'main.tasks_celery.check_last_login',  # Путь к задаче
+        'schedule': timedelta(minutes=10),  # Расписание выполнения задачи (например, каждые 10 минут)
+    },
+}
+
 # URL-адрес брокера сообщений
 CELERY_BROKER_URL = 'redis://localhost:6379' # Например, Redis, который по умолчанию работает на порту 6379
 
@@ -197,7 +206,7 @@ CELERY_BROKER_URL = 'redis://localhost:6379' # Например, Redis, кото
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 
 # Часовой пояс для работы Celery
-CELERY_TIMEZONE = "Australia/Tasmania"
+# CELERY_TIMEZONE = "Australia/Tasmania"
 
 # Флаг отслеживания выполнения задач
 CELERY_TASK_TRACK_STARTED = True
