@@ -193,9 +193,9 @@ REDIS_PORT = 6379
 
 # Настройки для Celery
 CELERY_BEAT_SCHEDULE = {
-    'task-name': {
+    'check_last_login': {
         'task': 'main.tasks_celery.check_last_login',  # Путь к задаче
-        'schedule': timedelta(minutes=10),  # Расписание выполнения задачи (например, каждые 10 минут)
+        'schedule': timedelta(minutes=60),  # Расписание выполнения задачи (например, каждые 10 минут)
     },
 }
 
