@@ -190,7 +190,7 @@ REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 
 # Настройки для Celery
-CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+# CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 # Настройки для Celery
 CELERY_BEAT_SCHEDULE = {

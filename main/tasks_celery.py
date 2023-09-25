@@ -28,7 +28,7 @@ def send_email_confirmation(lesson, well_id):
 
 
 @shared_task
-def check_last_login ():
+def check_last_login():
     #текущее время
     today = datetime.datetime.now()
 
@@ -43,13 +43,4 @@ def check_last_login ():
             print(f'Пользователь {i.email} не активен уже {tdays} дней. Аккаунт переведен в неактивные')
 
 
-
-# def send_moderator_likes_count():
-#     likes_count = Like.objects.all().count()
-#     send_mail(
-#         subject='Количество лайков',
-#         message=f'На {now} количество лайков: {likes_count}',
-#         from_email=settings.EMAIL_HOST_USER,
-#         recipient_list=[settings.EMAIL_MODERATOR]
-#     )
 
