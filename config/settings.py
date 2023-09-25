@@ -192,11 +192,11 @@ REDIS_PORT = 6379
 # Настройки для Celery
 # CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
-# Настройки для Celery
+# Настройки для Celery периодические задачи
 CELERY_BEAT_SCHEDULE = {
     'check_last_login': {
         'task': 'main.tasks_celery.check_last_login',  # Путь к задаче
-        'schedule': timedelta(minutes=60),  # Расписание выполнения задачи (например, каждые 10 минут)
+        'schedule': timedelta(minutes=60*24),  # Расписание выполнения задачи (например, каждые сутки)
     },
 }
 
