@@ -12,6 +12,7 @@ from main.permissions import IsLessonOwner, IsModerator
 from main.serializers import WellSerializer, LessonSerializer, PaymentSerializer, SubscriptionSerializer
 from django.shortcuts import get_object_or_404
 
+from main.tasks_celery import send_email_confirmation
 from users.models import UserRoles
 
 
@@ -61,11 +62,17 @@ class LessonRetrieveAPIView(generics.RetrieveAPIView):
     permission_classes = [IsAuthenticated, IsModerator | IsLessonOwner]
 
 
-
 class LessonUpdateAPIView(generics.UpdateAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated, IsModerator | IsLessonOwner]
+
+
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        send_email_confirmation(lesson=instance.lesson_name, well_id=instance.well_name_id)
+
+
 class LessonDestroyAPIView(generics.DestroyAPIView):
     queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated, IsLessonOwner]

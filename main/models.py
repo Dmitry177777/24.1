@@ -62,8 +62,8 @@ class Lesson(models.Model):
     lesson_description = models.TextField(max_length=1000, verbose_name='описание урока', **NULLABLE)
     lesson_image = models.ImageField(upload_to='lesson_image/', verbose_name='превью урока', **NULLABLE)
     lesson_link = models.URLField(max_length=150, default='', verbose_name='ссылка на видео')
-    well_name = models.ForeignKey(Well, on_delete=models.CASCADE, verbose_name='название курса')
-    owner = models.ForeignKey("users.User", on_delete=models.CASCADE, null=False)
+    well_name = models.ForeignKey(Well, on_delete=models.CASCADE, related_name='well')
+    owner = models.ForeignKey("users.User", on_delete=models.CASCADE, null=False, related_name='owner')
     is_public = models.BooleanField (default=True)
 
     class Meta:
@@ -101,8 +101,8 @@ class Payment(models.Model):
 class Subscription(models.Model):
     objects = None
     # email = models.OneToOneField(Student, on_delete=models.CASCADE,  default='mail', verbose_name='почта_пользователя')
-    well_name = models.ForeignKey(Well, on_delete=models.CASCADE, null=False, verbose_name='курс подписки')
-    owner = models.ForeignKey("users.User", on_delete=models.CASCADE, null=False, verbose_name='Пользователь')
+    well_name = models.ForeignKey(Well, on_delete=models.CASCADE, null=False, related_name='well')
+    owner = models.ForeignKey("users.User", on_delete=models.CASCADE, null=False, related_name='user')
     is_activ = models.BooleanField(default=True, verbose_name='Подписка')
 
     class Meta:
